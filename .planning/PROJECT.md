@@ -38,7 +38,8 @@
 - 目标平台：网页端（桌面 + 移动端浏览器）
 - 技术栈：React 18 + Vite + TypeScript + Tailwind CSS
 - 数据存储：浏览器 LocalStorage
-- 天气 API：需要选择一个免费的天气 API（如 OpenWeatherMap、和风天气等）
+- 天气 API：Open-Meteo（免费，无需 API Key）
+- 代码仓库：https://github.com/insentek/irrigation-website
 
 ## Constraints
 
