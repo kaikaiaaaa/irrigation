@@ -39,7 +39,7 @@
 - 技术栈：React 18 + Vite + TypeScript + Tailwind CSS
 - 数据存储：浏览器 LocalStorage
 - 天气 API：Open-Meteo（免费，无需 API Key）
-- 代码仓库：https://github.com/insentek/irrigation-website
+- 代码仓库：https://github.com/kaikaiaaaa/irrigation
 
 ## Constraints
 
