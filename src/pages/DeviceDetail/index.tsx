@@ -5,6 +5,8 @@ import { useDeviceStore } from '@/stores/deviceStore';
 import { useWeather } from '@/hooks/useWeather';
 import { WeatherCard } from '@/components/weather/WeatherCard';
 import { RainForecast } from '@/components/weather/RainForecast';
+import { RecommendationDetail } from '@/components/irrigation/RecommendationDetail';
+import { calculateRecommendation } from '@/services/irrigationEngine';
 import { EXPERT_RULES, SOIL_CHARACTERISTICS } from '@/types/device';
 
 export const DeviceDetailPage: React.FC = () => {
@@ -72,6 +74,9 @@ export const DeviceDetailPage: React.FC = () => {
     refetch: refetchWeather,
   } = useWeather(device.location.latitude, device.location.longitude);
 
+  // 计算灌溉建议
+  const recommendation = calculateRecommendation(device, weather, forecast);
+
   return (
     <div className="space-y-6">
       {/* 头部 */}
@@ -84,6 +89,9 @@ export const DeviceDetailPage: React.FC = () => {
         </button>
         <h1 className="text-xl font-bold">{device.name}</h1>
       </div>
+
+      {/* 灌溉建议 */}
+      <RecommendationDetail recommendation={recommendation} />
 
       {/* 天气卡片 */}
       <WeatherCard

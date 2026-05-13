@@ -4,33 +4,25 @@ import { Plus, Droplets, Calendar, ChevronRight, CloudRain } from 'lucide-react'
 import { useDeviceStore } from '@/stores/deviceStore';
 import { useWeatherStore } from '@/stores/weatherStore';
 import { WeatherIcon } from '@/components/weather/WeatherIcon';
-import { EXPERT_RULES } from '@/types/device';
+import { RecommendationBadge } from '@/components/irrigation/RecommendationBadge';
+import { calculateRecommendation } from '@/services/irrigationEngine';
+import type { RecommendationType } from '@/types/irrigation';
 
 export const HomePage: React.FC = () => {
   const devices = useDeviceStore(state => state.devices);
   const weatherCache = useWeatherStore(state => state.weatherCache);
 
-  const getRecommendation = (device: typeof devices[0]) => {
-    const rule = EXPERT_RULES.find(r => r.cropType === device.cropType);
-    if (!rule) return { text: '暂无建议', color: 'gray' };
-
-    if (device.soilMoisture < rule.minMoisture) {
-      return { text: '建议灌溉', color: 'red' };
-    } else if (device.soilMoisture > rule.maxMoisture) {
-      return { text: '湿度充足', color: 'green' };
-    } else {
-      return { text: '适度监控', color: 'yellow' };
-    }
-  };
-
-  const getRecommendationColor = (color: string) => {
-    const colors: Record<string, string> = {
-      red: 'bg-red-100 text-red-800 border-red-200',
-      green: 'bg-green-100 text-green-800 border-green-200',
-      yellow: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      gray: 'bg-gray-100 text-gray-800 border-gray-200',
-    };
-    return colors[color] || colors.gray;
+  const getDeviceRecommendation = (device: typeof devices[0]): { type: RecommendationType; score: number } => {
+    const deviceId = `${device.location.latitude},${device.location.longitude}`;
+    const weather = weatherCache[deviceId];
+    
+    const result = calculateRecommendation(
+      device,
+      weather?.current ?? null,
+      weather?.forecast ?? null
+    );
+    
+    return { type: result.type, score: result.score };
   };
 
   return (
@@ -53,7 +45,7 @@ export const HomePage: React.FC = () => {
       {/* 设备列表 */}
       <div className="space-y-4">
         {devices.map(device => {
-          const recommendation = getRecommendation(device);
+          const recommendation = getDeviceRecommendation(device);
           
           return (
             <Link
@@ -65,9 +57,7 @@ export const HomePage: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="text-lg font-semibold text-gray-900">{device.name}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full border ${getRecommendationColor(recommendation.color)}`}>
-                      {recommendation.text}
-                    </span>
+                    <RecommendationBadge type={recommendation.type} size="sm" />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-3 mt-3">
