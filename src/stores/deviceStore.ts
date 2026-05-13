@@ -11,6 +11,8 @@ interface DeviceState {
   getDeviceById: (id: string) => Device | undefined;
   updateSoilMoisture: (id: string, moisture: number) => void;
   markAsIrrigated: (id: string) => void;
+  setDevices: (devices: Device[]) => void;
+  clearDevices: () => void;
 }
 
 // 生成唯一ID
@@ -131,6 +133,14 @@ export const useDeviceStore = create<DeviceState>()(
               : device
           ),
         }));
+      },
+
+      setDevices: (devices: Device[]) => {
+        set({ devices });
+      },
+
+      clearDevices: () => {
+        set({ devices: [] });
       },
     }),
     {

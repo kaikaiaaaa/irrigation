@@ -1,15 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { fetchWeatherData, getWeatherDescription, isRainy, isClear } from '@/services/weatherApi';
 
 // Mock fetch globally
 const mockFetch = (data: unknown) => {
-  global.fetch = vi.fn().mockResolvedValue({
+  (globalThis as unknown as { fetch: typeof fetch }).fetch = vi.fn().mockResolvedValue({
     ok: true,
     json: () => Promise.resolve(data),
-  });
+  } as Response);
 };
-
-import { vi } from 'vitest';
 
 describe('天气API服务', () => {
   it('应正确解析天气数据', async () => {
@@ -44,11 +42,11 @@ describe('天气API服务', () => {
   });
 
   it('应处理API错误', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
+    (globalThis as unknown as { fetch: typeof fetch }).fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 500,
       statusText: 'Internal Server Error',
-    });
+    } as Response);
 
     await expect(fetchWeatherData(31.2304, 121.4737)).rejects.toThrow('天气数据获取失败');
   });
