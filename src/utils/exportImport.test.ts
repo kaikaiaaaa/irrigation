@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { exportDevices, validateImportData, importDevices } from '@/utils/exportImport';
+import { exportDevices, validateImportData } from '@/utils/exportImport';
 import type { Device } from '@/types/device';
 
 describe('数据导入导出', () => {
