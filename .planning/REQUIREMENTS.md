@@ -1,17 +1,17 @@
 # Requirements: 放心灌 Web版
 
 **Defined:** 2025-05-13
-**Core Value:** 用户打开应用就能看到每个设备的当前状态以及基于天气的灌溉建议，无需专业知识即可做出正确的浇水决策。
+**Core Value:** 用户打开应用就能看到每个设备的当前状态以及基于天气、土壤湿度和专家知识的综合灌溉建议，无需专业知识即可做出正确的浇水决策。
 
 ## v1 Requirements
 
 ### Device Management
 
-- [ ] **DEV-01**: User can add a new irrigation device/field with name, location, crop type, and area
-- [ ] **DEV-02**: User can edit device details (name, location, crop type, area, thresholds)
+- [ ] **DEV-01**: User can add a new irrigation device/field with name, location, crop type, area, and soil moisture sensor
+- [ ] **DEV-02**: User can edit device details (name, location, crop type, area, soil moisture thresholds)
 - [ ] **DEV-03**: User can delete a device
-- [ ] **DEV-04**: User can view a list of all devices with status summary
-- [ ] **DEV-05**: User can view device details including current weather and irrigation recommendation
+- [ ] **DEV-04**: User can view a list of all devices with status summary (including soil moisture level)
+- [ ] **DEV-05**: User can view device details including current weather, soil moisture, and irrigation recommendation
 
 ### Weather Integration
 
@@ -24,8 +24,8 @@
 ### Irrigation Recommendations
 
 - [ ] **REC-01**: App shows irrigation recommendation for each device (WATER / DELAY / SKIP / MONITOR)
-- [ ] **REC-02**: Recommendation includes reason (e.g., "Rain forecast in next 24h", "Soil moisture adequate")
-- [ ] **REC-03**: Recommendation considers: recent rain, forecast rain, temperature, humidity
+- [ ] **REC-02**: Recommendation includes reason (e.g., "土壤湿度低于阈值", "未来24小时有雨", "温度适宜灌溉")
+- [ ] **REC-03**: Recommendation considers: weather (rain, temperature, humidity), soil moisture level, and crop-specific expert rules
 - [ ] **REC-04**: User can manually override recommendation and mark as "irrigated"
 - [ ] **REC-05**: App tracks last irrigation date per device
 
@@ -57,7 +57,7 @@
 
 - **REC-06**: ET-based irrigation calculation (Penman-Monteith or Hargreaves)
 - **REC-07**: Crop coefficient (Kc) based on growth stage
-- **REC-08**: Soil moisture sensor integration (if data available)
+- **REC-08**: Advanced soil moisture analysis (trends, historical data)
 - **REC-09**: Irrigation scheduling (calendar view)
 
 ### Data & Sync
@@ -76,6 +76,7 @@
 | Multi-user collaboration | Single-user focus for v1 |
 | Mobile app (native) | Web app only, PWA considered for v2 |
 | Advanced ET modeling | Rule-based approach sufficient for v1 |
+| Real-time soil sensor hardware | Manual input or simulated data for v1 |
 
 ## Traceability
 
