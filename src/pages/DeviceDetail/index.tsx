@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Edit2, Trash2, Droplets, Calendar } from 'lucide-react';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useWeather } from '@/hooks/useWeather';
+import { WeatherCard } from '@/components/weather/WeatherCard';
+import { RainForecast } from '@/components/weather/RainForecast';
 import { EXPERT_RULES, SOIL_CHARACTERISTICS } from '@/types/device';
 
 export const DeviceDetailPage: React.FC = () => {
@@ -59,6 +62,16 @@ export const DeviceDetailPage: React.FC = () => {
 
   const moistureStatus = getMoistureStatus();
 
+  // 获取天气数据
+  const {
+    current: weather,
+    forecast,
+    isLoading: weatherLoading,
+    error: weatherError,
+    lastUpdated,
+    refetch: refetchWeather,
+  } = useWeather(device.location.latitude, device.location.longitude);
+
   return (
     <div className="space-y-6">
       {/* 头部 */}
@@ -71,6 +84,18 @@ export const DeviceDetailPage: React.FC = () => {
         </button>
         <h1 className="text-xl font-bold">{device.name}</h1>
       </div>
+
+      {/* 天气卡片 */}
+      <WeatherCard
+        weather={weather}
+        isLoading={weatherLoading}
+        error={weatherError}
+        lastUpdated={lastUpdated}
+        onRefresh={refetchWeather}
+      />
+
+      {/* 降雨预报 */}
+      <RainForecast forecast={forecast} />
 
       {/* 基本信息卡片 */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-4">

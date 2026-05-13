@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Droplets, Calendar, ChevronRight } from 'lucide-react';
+import { Plus, Droplets, Calendar, ChevronRight, CloudRain } from 'lucide-react';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useWeatherStore } from '@/stores/weatherStore';
+import { WeatherIcon } from '@/components/weather/WeatherIcon';
 import { EXPERT_RULES } from '@/types/device';
 
 export const HomePage: React.FC = () => {
   const devices = useDeviceStore(state => state.devices);
+  const weatherCache = useWeatherStore(state => state.weatherCache);
 
   const getRecommendation = (device: typeof devices[0]) => {
     const rule = EXPERT_RULES.find(r => r.cropType === device.cropType);
@@ -84,6 +87,35 @@ export const HomePage: React.FC = () => {
                       </span>
                     </div>
                   </div>
+
+                  {/* 天气信息 */}
+                  {(() => {
+                    const deviceId = `${device.location.latitude},${device.location.longitude}`;
+                    const weather = weatherCache[deviceId];
+                    if (weather?.current) {
+                      return (
+                        <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100">
+                          <WeatherIcon code={weather.current.weatherCode} size={18} />
+                          <span className="text-sm text-gray-600">
+                            {Math.round(weather.current.temperature)}°C
+                          </span>
+                          <span className="text-gray-300">|</span>
+                          <span className="text-sm text-gray-600">
+                            湿度 {weather.current.humidity}%
+                          </span>
+                          {weather.current.precipitation > 0 && (
+                            <>
+                              <CloudRain size={14} className="text-blue-500" />
+                              <span className="text-sm text-blue-600">
+                                {weather.current.precipitation}mm
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                   
                   <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
                     <span>{device.cropType}</span>
