@@ -4,13 +4,13 @@ import { Home, Plus, Settings } from 'lucide-react';
 
 export const MobileNav: React.FC = () => {
   const navItems = [
-    { to: '/', icon: Home, label: '我的设备' },
-    { to: '/add', icon: Plus, label: '添加设备' },
+    { to: '/', icon: Home, label: '设备' },
+    { to: '/add', icon: Plus, label: '添加' },
     { to: '/settings', icon: Settings, label: '设置' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 safe-area-pb">
       <div className="flex justify-around items-center h-16">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
@@ -24,8 +24,8 @@ export const MobileNav: React.FC = () => {
               }`
             }
           >
-            <Icon size={24} />
-            <span className="text-xs mt-1">{label}</span>
+            <Icon size={22} />
+            <span className="text-xs mt-0.5">{label}</span>
           </NavLink>
         ))}
       </div>

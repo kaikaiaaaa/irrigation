@@ -78,16 +78,16 @@ export const DeviceDetailPage: React.FC = () => {
   const recommendation = calculateRecommendation(device, weather, forecast);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* 头部 */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 md:gap-4">
         <button
           onClick={() => navigate('/')}
           className="p-2 hover:bg-gray-100 rounded-lg touch-target"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={20} className="md:w-6 md:h-6" />
         </button>
-        <h1 className="text-xl font-bold">{device.name}</h1>
+        <h1 className="text-lg md:text-xl font-bold">{device.name}</h1>
       </div>
 
       {/* 灌溉建议 */}
@@ -207,7 +207,7 @@ export const DeviceDetailPage: React.FC = () => {
       </div>
 
       {/* 操作按钮 */}
-      <div className="flex gap-4">
+      <div className="flex gap-3 md:gap-4">
         <button
           onClick={() => navigate(`/add?edit=${device.id}`)}
           className="flex-1 flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-lg touch-target"
@@ -226,8 +226,8 @@ export const DeviceDetailPage: React.FC = () => {
 
       {/* 删除确认对话框 */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full mx-4">
             <h3 className="text-lg font-bold mb-2">确认删除</h3>
             <p className="text-gray-600 mb-6">
               确定要删除 "{device.name}" 吗？此操作不可撤销。

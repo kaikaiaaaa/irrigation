@@ -85,16 +85,16 @@ export const AddDevicePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* 头部 */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 md:gap-4">
         <button
           onClick={() => navigate('/')}
           className="p-2 hover:bg-gray-100 rounded-lg touch-target"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={20} className="md:w-6 md:h-6" />
         </button>
-        <h1 className="text-xl font-bold">{editId ? '编辑设备' : '添加设备'}</h1>
+        <h1 className="text-lg md:text-xl font-bold">{editId ? '编辑设备' : '添加设备'}</h1>
       </div>
 
       {/* 表单 */}
@@ -200,7 +200,7 @@ export const AddDevicePage: React.FC = () => {
         {/* 提交按钮 */}
         <button
           type="submit"
-          className="w-full flex items-center justify-center gap-2 py-4 bg-primary-700 text-white rounded-lg touch-target font-medium text-lg"
+          className="w-full flex items-center justify-center gap-2 py-3 md:py-4 bg-primary-700 text-white rounded-lg touch-target font-medium text-base md:text-lg"
         >
           <Save size={20} />
           <span>{editId ? '保存修改' : '添加设备'}</span>

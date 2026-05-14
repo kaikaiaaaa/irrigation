@@ -1,26 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #e8f5e9;
+  --color-primary-100: #c8e6c9;
+  --color-primary-200: #a5d6a7;
+  --color-primary-300: #81c784;
+  --color-primary-400: #66bb6a;
+  --color-primary-500: #4caf50;
+  --color-primary-600: #43a047;
+  --color-primary-700: #388e3c;
+  --color-primary-800: #2e7d32;
+  --color-primary-900: #1b5e20;
+  
+  --color-accent-50: #fff8e1;
+  --color-accent-100: #ffecb3;
+  --color-accent-200: #ffe082;
+  --color-accent-300: #ffd54f;
+  --color-accent-400: #ffca28;
+  --color-accent-500: #ffc107;
+  --color-accent-600: #ffb300;
+  --color-accent-700: #ffa000;
+  --color-accent-800: #ff8f00;
+  --color-accent-900: #ff6f00;
+}
 
 @layer base {
   :root {
-    --primary-50: #e8f5e9;
-    --primary-100: #c8e6c9;
-    --primary-200: #a5d6a7;
-    --primary-300: #81c784;
-    --primary-400: #66bb6a;
-    --primary-500: #4caf50;
-    --primary-600: #43a047;
-    --primary-700: #388e3c;
-    --primary-800: #2e7d32;
-    --primary-900: #1b5e20;
-    
-    --accent-500: #ffc107;
-    --accent-600: #ffb300;
-    --accent-700: #ffa000;
-    --accent-800: #ff8f00;
-    --accent-900: #ff6f00;
-    
     --bg: #f5f5f5;
     --surface: #ffffff;
     --text: #1a1a1a;
@@ -54,5 +59,9 @@
   
   .text-shadow {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }

@@ -10,7 +10,7 @@ export const DesktopSidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 z-50">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 z-40 flex flex-col">
       <div className="p-6">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-primary-700 rounded-lg flex items-center justify-center">
@@ -19,7 +19,7 @@ export const DesktopSidebar: React.FC = () => {
           <h1 className="text-xl font-bold text-gray-900">放心灌</h1>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-1">
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink
               key={to}
@@ -37,6 +37,10 @@ export const DesktopSidebar: React.FC = () => {
             </NavLink>
           ))}
         </nav>
+      </div>
+      
+      <div className="mt-auto p-6 border-t border-gray-100">
+        <p className="text-xs text-gray-400">放心灌 v1.0.0</p>
       </div>
     </aside>
   );

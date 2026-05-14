@@ -26,18 +26,18 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* 页面标题 */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">我的设备</h1>
-          <p className="text-gray-500 mt-1">共 {devices.length} 个灌溉地块</p>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">我的设备</h1>
+          <p className="text-gray-500 mt-1 text-sm md:text-base">共 {devices.length} 个灌溉地块</p>
         </div>
         <Link
           to="/add"
-          className="md:hidden flex items-center gap-2 bg-primary-700 text-white px-4 py-2 rounded-lg touch-target"
+          className="md:hidden flex items-center gap-2 bg-primary-700 text-white px-3 py-2 rounded-lg touch-target text-sm"
         >
-          <Plus size={20} />
+          <Plus size={18} />
           <span>添加</span>
         </Link>
       </div>
@@ -60,19 +60,19 @@ export const HomePage: React.FC = () => {
                     <RecommendationBadge type={recommendation.type} size="sm" />
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3 mt-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-3">
                     <div className="flex items-center gap-2 text-gray-600">
-                      <Droplets size={16} className="text-blue-500" />
-                      <span className="text-sm">
+                      <Droplets size={16} className="text-blue-500 flex-shrink-0" />
+                      <span className="text-sm truncate">
                         土壤湿度: {device.soilMoisture}%
                       </span>
                     </div>
                     
                     <div className="flex items-center gap-2 text-gray-600">
-                      <Calendar size={16} className="text-gray-400" />
-                      <span className="text-sm">
+                      <Calendar size={16} className="text-gray-400 flex-shrink-0" />
+                      <span className="text-sm truncate">
                         {device.lastIrrigationDate
-                          ? `上次灌溉: ${new Date(device.lastIrrigationDate).toLocaleDateString('zh-CN')}`
+                          ? `上次: ${new Date(device.lastIrrigationDate).toLocaleDateString('zh-CN')}`
                           : '尚未灌溉'}
                       </span>
                     </div>
@@ -131,7 +131,7 @@ export const HomePage: React.FC = () => {
           <p className="text-gray-500 mb-6">添加您的第一个灌溉地块，开始智能管理</p>
           <Link
             to="/add"
-            className="inline-flex items-center gap-2 bg-primary-700 text-white px-6 py-3 rounded-lg touch-target"
+            className="inline-flex items-center gap-2 bg-primary-700 text-white px-6 py-3 rounded-lg touch-target text-base md:text-lg"
           >
             <Plus size={20} />
             <span>添加设备</span>
