@@ -1,11 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Plus, Settings } from 'lucide-react';
+import { Calculator, Settings } from 'lucide-react';
 
 export const MobileNav: React.FC = () => {
   const navItems = [
-    { to: '/', icon: Home, label: '设备' },
-    { to: '/add', icon: Plus, label: '添加' },
+    { to: '/', icon: Calculator, label: '计算' },
     { to: '/settings', icon: Settings, label: '设置' },
   ];
 

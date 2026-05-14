@@ -1,11 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Plus, Settings, Droplets } from 'lucide-react';
+import { Calculator, Settings, Droplets } from 'lucide-react';
 
 export const DesktopSidebar: React.FC = () => {
   const navItems = [
-    { to: '/', icon: Home, label: '我的设备' },
-    { to: '/add', icon: Plus, label: '添加设备' },
+    { to: '/', icon: Calculator, label: '灌溉计算' },
     { to: '/settings', icon: Settings, label: '设置' },
   ];
 
@@ -40,7 +39,7 @@ export const DesktopSidebar: React.FC = () => {
       </div>
       
       <div className="mt-auto p-6 border-t border-gray-100">
-        <p className="text-xs text-gray-400">放心灌 v1.0.0</p>
+        <p className="text-xs text-gray-400">放心灌 v2.0.0 - 智能灌溉计算器</p>
       </div>
     </aside>
   );
