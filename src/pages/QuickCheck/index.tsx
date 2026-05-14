@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Calculator,
   Droplets,
-  Thermometer,
-  Wind,
   CloudRain,
   Sprout,
   Ruler,
@@ -106,7 +104,7 @@ export const QuickCheckPage: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-8 max-w-lg mx-auto">
-      {/* 头部 */}
+      {/* Header */}
       <div className="text-center py-8">
         <div className="w-16 h-16 bg-gradient-to-br from-[#5e6ad2] to-[#6872e3] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-[#5e6ad2]/20">
           <Calculator className="text-white" size={32} />
@@ -115,7 +113,7 @@ export const QuickCheckPage: React.FC = () => {
         <p className="text-[#6b7280] mt-2 text-sm">基于土壤物理学和作物生理学的精准灌溉建议</p>
       </div>
 
-      {/* 保存/加载配置 */}
+      {/* Save/Load Config */}
       <div className="flex gap-3">
         <button
           onClick={() => setShowSaved(!showSaved)}
@@ -133,7 +131,7 @@ export const QuickCheckPage: React.FC = () => {
         </button>
       </div>
 
-      {/* 保存对话框 */}
+      {/* Save Dialog */}
       {showSaveDialog && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[#111113] border border-[#1f1f22] rounded-2xl p-6 w-full max-w-sm">
@@ -165,7 +163,7 @@ export const QuickCheckPage: React.FC = () => {
         </div>
       )}
 
-      {/* 历史配置列表 */}
+      {/* Saved Configs List */}
       {showSaved && savedConfigs.length > 0 && (
         <div className="bg-[#0c0c0e] border border-[#1f1f22] rounded-xl p-4 space-y-2">
           <h3 className="text-xs font-medium text-[#6b7280] uppercase tracking-wider mb-3">点击加载配置</h3>
@@ -195,7 +193,7 @@ export const QuickCheckPage: React.FC = () => {
         </div>
       )}
 
-      {/* 作物信息卡片 */}
+      {/* Crop Info Card */}
       <div className="bg-[#0c0c0e] border border-[#1f1f22] rounded-xl p-5">
         <div className="flex items-center gap-2.5 mb-5">
           <div className="w-7 h-7 bg-[#5e6ad2]/10 rounded-lg flex items-center justify-center">
@@ -252,7 +250,7 @@ export const QuickCheckPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 当前条件卡片 */}
+      {/* Current Conditions Card */}
       <div className="bg-[#0c0c0e] border border-[#1f1f22] rounded-xl p-5">
         <div className="flex items-center gap-2.5 mb-5">
           <div className="w-7 h-7 bg-orange-500/10 rounded-lg flex items-center justify-center">
@@ -261,7 +259,7 @@ export const QuickCheckPage: React.FC = () => {
           <h2 className="font-semibold text-[#f7f8f8]">当前条件</h2>
         </div>
 
-        {/* 土壤湿度 - 带滑块 */}
+        {/* Soil Moisture - with slider */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <label className="text-xs font-medium text-[#6b7280] uppercase tracking-wider">土壤湿度</label>
@@ -360,7 +358,7 @@ export const QuickCheckPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 计算按钮 */}
+      {/* Calculate Button */}
       <button
         onClick={handleCheck}
         className="w-full py-4 bg-[#5e6ad2] text-white rounded-xl font-semibold text-base hover:bg-[#6872e3] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
@@ -370,10 +368,10 @@ export const QuickCheckPage: React.FC = () => {
         <ArrowRight size={18} />
       </button>
 
-      {/* 结果展示 */}
+      {/* Results */}
       {result && (
         <div className="bg-[#0c0c0e] border border-[#1f1f22] rounded-xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {/* 结果头部 */}
+          {/* Result Header */}
           <div className={`p-6 ${getUrgencyColor(result.urgency).bg}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -383,7 +381,7 @@ export const QuickCheckPage: React.FC = () => {
                   <AlertCircle className={getUrgencyColor(result.urgency).icon} size={28} />
                 )}
                 <div>
-                  <p className={`text-xs font-medium ${getUrgencyColor(result.urgency).text} opacity-70 uppercase tracking-wider`>
+                  <p className={`text-xs font-medium ${getUrgencyColor(result.urgency).text} opacity-70 uppercase tracking-wider`}>
                     灌溉建议
                   </p>
                   <h3 className={`text-xl font-bold ${getUrgencyColor(result.urgency).text}`}>
@@ -392,7 +390,7 @@ export const QuickCheckPage: React.FC = () => {
                 </div>
               </div>
               <div className="text-right">
-                <p className={`text-xs ${getUrgencyColor(result.urgency).text} opacity-70 uppercase tracking-wider`>有效水分</p>
+                <p className={`text-xs ${getUrgencyColor(result.urgency).text} opacity-70 uppercase tracking-wider`}>有效水分</p>
                 <p className={`text-xl font-bold ${getUrgencyColor(result.urgency).text}`}>
                   {result.availableWater}%
                 </p>
@@ -401,12 +399,12 @@ export const QuickCheckPage: React.FC = () => {
           </div>
 
           <div className="p-5 space-y-5">
-            {/* 原因 */}
+            {/* Reason */}
             <div className="bg-[#111113] rounded-lg p-4 border border-[#1f1f22]">
               <p className="text-[#9ca3af] text-sm leading-relaxed">{result.reason}</p>
             </div>
 
-            {/* 数据卡片 */}
+            {/* Data Cards */}
             {result.shouldIrrigate && (
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-4 text-center">
@@ -439,7 +437,7 @@ export const QuickCheckPage: React.FC = () => {
               </div>
             )}
 
-            {/* 湿度对比 */}
+            {/* Moisture Comparison */}
             <div className="bg-[#111113] rounded-lg p-4 border border-[#1f1f22]">
               <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-3">土壤湿度对比</p>
               <div className="flex items-center gap-3">
@@ -458,7 +456,7 @@ export const QuickCheckPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 建议列表 */}
+            {/* Tips List */}
             <div>
               <button
                 onClick={() => setShowTips(!showTips)}
