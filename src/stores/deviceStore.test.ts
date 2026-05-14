@@ -12,6 +12,7 @@ describe('设备状态管理', () => {
       cropType: '水稻',
       soilType: '壤土',
       area: 5,
+      soilMoisture: 50,
       moistureThreshold: 60,
     });
 

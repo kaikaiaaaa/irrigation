@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Device, DeviceFormData } from '@/types/device';
-import { EXPERT_RULES } from '@/types/device';
+
 
 interface DeviceState {
   devices: Device[];
@@ -73,13 +73,10 @@ export const useDeviceStore = create<DeviceState>()(
 
       addDevice: (data: DeviceFormData) => {
         const now = new Date().toISOString();
-        const expertRule = EXPERT_RULES.find(r => r.cropType === data.cropType);
         
         const newDevice: Device = {
           id: generateId(),
           ...data,
-          soilMoisture: 50, // 默认初始湿度
-          moistureThreshold: expertRule?.minMoisture ?? 50,
           lastIrrigationDate: null,
           createdAt: now,
           updatedAt: now,

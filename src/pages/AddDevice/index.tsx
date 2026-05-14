@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, MapPin } from 'lucide-react';
 import { useDeviceStore } from '@/stores/deviceStore';
 import { CROP_TYPES, SOIL_TYPES, type DeviceFormData } from '@/types/device';
 
@@ -17,14 +17,16 @@ export const AddDevicePage: React.FC = () => {
 
   const [formData, setFormData] = useState<DeviceFormData>({
     name: '',
-    location: { latitude: 31.2304, longitude: 121.4737 },
+    location: { latitude: 31.2304, longitude: 121.4737, address: '' },
     cropType: '水稻',
     soilType: '壤土',
     area: 1,
+    soilMoisture: 50,
     moistureThreshold: 60,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [locationLoading, setLocationLoading] = useState(false);
 
   useEffect(() => {
     if (existingDevice) {
@@ -34,6 +36,7 @@ export const AddDevicePage: React.FC = () => {
         cropType: existingDevice.cropType,
         soilType: existingDevice.soilType,
         area: existingDevice.area,
+        soilMoisture: existingDevice.soilMoisture,
         moistureThreshold: existingDevice.moistureThreshold,
       });
     }
@@ -50,8 +53,20 @@ export const AddDevicePage: React.FC = () => {
       newErrors.area = '面积必须大于0';
     }
     
+    if (formData.soilMoisture < 0 || formData.soilMoisture > 100) {
+      newErrors.soilMoisture = '土壤湿度必须在0-100之间';
+    }
+    
     if (formData.moistureThreshold < 0 || formData.moistureThreshold > 100) {
       newErrors.moistureThreshold = '阈值必须在0-100之间';
+    }
+    
+    if (formData.location.latitude < -90 || formData.location.latitude > 90) {
+      newErrors.latitude = '纬度必须在-90到90之间';
+    }
+    
+    if (formData.location.longitude < -180 || formData.location.longitude > 180) {
+      newErrors.longitude = '经度必须在-180到180之间';
     }
 
     setErrors(newErrors);
@@ -74,7 +89,6 @@ export const AddDevicePage: React.FC = () => {
 
   const handleChange = (field: keyof DeviceFormData, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // 清除对应字段的错误
     if (errors[field]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -82,6 +96,46 @@ export const AddDevicePage: React.FC = () => {
         return newErrors;
       });
     }
+  };
+
+  const handleLocationChange = (field: 'latitude' | 'longitude' | 'address', value: string | number) => {
+    setFormData(prev => ({
+      ...prev,
+      location: { ...prev.location, [field]: value }
+    }));
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setErrors(prev => ({ ...prev, location: '浏览器不支持定位' }));
+      return;
+    }
+    
+    setLocationLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setFormData(prev => ({
+          ...prev,
+          location: {
+            ...prev.location,
+            latitude: parseFloat(position.coords.latitude.toFixed(4)),
+            longitude: parseFloat(position.coords.longitude.toFixed(4)),
+          }
+        }));
+        setLocationLoading(false);
+      },
+      (err) => {
+        setErrors(prev => ({ ...prev, location: `定位失败: ${err.message}` }));
+        setLocationLoading(false);
+      }
+    );
   };
 
   return (
@@ -98,7 +152,7 @@ export const AddDevicePage: React.FC = () => {
       </div>
 
       {/* 表单 */}
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* 设备名称 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -112,6 +166,62 @@ export const AddDevicePage: React.FC = () => {
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
           {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+        </div>
+
+        {/* 位置信息 */}
+        <div className="bg-gray-50 rounded-xl p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <MapPin size={18} className="text-primary-600" />
+              <h3 className="font-medium text-gray-900">位置信息</h3>
+            </div>
+            <button
+              type="button"
+              onClick={getCurrentLocation}
+              disabled={locationLoading}
+              className="text-sm text-primary-700 hover:text-primary-800 disabled:opacity-50"
+            >
+              {locationLoading ? '定位中...' : '获取当前位置'}
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">纬度</label>
+              <input
+                type="number"
+                step="0.0001"
+                value={formData.location.latitude}
+                onChange={(e) => handleLocationChange('latitude', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              />
+              {errors.latitude && <p className="text-red-500 text-xs mt-1">{errors.latitude}</p>}
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">经度</label>
+              <input
+                type="number"
+                step="0.0001"
+                value={formData.location.longitude}
+                onChange={(e) => handleLocationChange('longitude', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              />
+              {errors.longitude && <p className="text-red-500 text-xs mt-1">{errors.longitude}</p>}
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">地址描述</label>
+            <input
+              type="text"
+              value={formData.location.address || ''}
+              onChange={(e) => handleLocationChange('address', e.target.value)}
+              placeholder="例如：上海市浦东新区"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+            />
+          </div>
+          
+          {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
         </div>
 
         {/* 作物类型 */}
@@ -162,6 +272,27 @@ export const AddDevicePage: React.FC = () => {
           {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area}</p>}
         </div>
 
+        {/* 土壤湿度 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            当前土壤湿度（%）*
+          </label>
+          <input
+            type="number"
+            min="0"
+            max="100"
+            value={formData.soilMoisture}
+            onChange={(e) => handleChange('soilMoisture', parseInt(e.target.value))}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+          />
+          <p className="text-gray-500 text-sm mt-1">
+            请输入当前实测的土壤湿度值（0-100%）
+          </p>
+          {errors.soilMoisture && (
+            <p className="text-red-500 text-sm mt-1">{errors.soilMoisture}</p>
+          )}
+        </div>
+
         {/* 湿度阈值 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -181,20 +312,6 @@ export const AddDevicePage: React.FC = () => {
           {errors.moistureThreshold && (
             <p className="text-red-500 text-sm mt-1">{errors.moistureThreshold}</p>
           )}
-        </div>
-
-        {/* 位置 */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            位置
-          </label>
-          <input
-            type="text"
-            value={formData.location.address || ''}
-            onChange={(e) => handleChange('location', { ...formData.location, address: e.target.value })}
-            placeholder="例如：上海市浦东新区"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
         </div>
 
         {/* 提交按钮 */}

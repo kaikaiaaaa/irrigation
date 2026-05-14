@@ -30,6 +30,7 @@ export interface DeviceFormData {
   cropType: CropType;
   soilType: SoilType;
   area: number;
+  soilMoisture: number;
   moistureThreshold: number;
 }
 
